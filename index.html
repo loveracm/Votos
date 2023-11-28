@@ -30,6 +30,7 @@
 
 <div id="resultados" style="display: none;">
   <h2>Resultados de la votación</h2>
+  <p id="numeroVotos">Número total de votos: 0</p>
   <div id="chartContainer" style="width: 400px; height: 300px;"></div>
   <button onclick="resetear()">Volver a votar</button>
 </div>
@@ -41,7 +42,7 @@
   };
 
   let votosTotales = 0;
-  const maxVotos = 30;
+  const maxVotos = 800;
 
   // Recupera los votos almacenados en localStorage
   if (localStorage.getItem('votos')) {
@@ -66,11 +67,13 @@
 
         // Almacena los votos en localStorage
         localStorage.setItem('votos', JSON.stringify(votos));
+
+        mostrarResultados();
       } else {
         alert("Por favor, elige una opción antes de votar.");
       }
     } else {
-      alert("Ya has alcanzado el límite de votos (30).");
+      alert("Ya has alcanzado el límite de votos (800).");
     }
   }
 
@@ -97,6 +100,9 @@
     });
 
     chart.render();
+
+    // Muestra el número total de votos acumulados
+    document.getElementById("numeroVotos").textContent = "Número total de votos: " + votosTotales;
   }
 
   function resetear() {
