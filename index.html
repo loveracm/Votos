@@ -26,6 +26,8 @@
   <button onclick="votar()">Votar</button>
 </div>
 
+<button onclick="mostrarResultados()">Mostrar Resultados</button>
+
 <div id="resultados" style="display: none;">
   <h2>Resultados de la votación</h2>
   <div id="chartContainer" style="width: 400px; height: 300px;"></div>
@@ -64,8 +66,6 @@
 
         // Almacena los votos en localStorage
         localStorage.setItem('votos', JSON.stringify(votos));
-
-        actualizarResultados();
       } else {
         alert("Por favor, elige una opción antes de votar.");
       }
@@ -74,7 +74,7 @@
     }
   }
 
-  function actualizarResultados() {
+  function mostrarResultados() {
     document.getElementById("votingOptions").style.display = "none";
     document.getElementById("resultados").style.display = "block";
 
