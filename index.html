@@ -1,118 +1,43 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistema de Votación</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votaciones</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #resultados {
+            margin-top: 20px;
+        }
+
+        canvas {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
+    <h1>Sistema de Votación</h1>
 
-<h1>Sistema de Votación</h1>
+    <form id="votacionForm">
+        <label>
+            <input type="radio" name="voto" value="Fuerza Estudiantil"> Fuerza Estudiantil
+        </label>
+        <label>
+            <input type="radio" name="voto" value="Blanco"> Blanco
+        </label>
+        <br>
+        <button type="button" onclick="registrarVoto()">Votar</button>
+        <button type="button" onclick="mostrarEstadisticas()">Mostrar Estadísticas</button>
+        <button type="button" onclick="finalizarVotaciones()">Finalizar Votaciones</button>
+    </form>
 
-<div id="votingOptions">
-  <h2>Elige una opción:</h2>
-  <label>
-    <input type="radio" name="votingOption" value="fuerzaEstudiantil"> Fuerza Estudiantil
-  </label>
-  <label>
-    <input type="radio" name="votingOption" value="blanco"> Blanco
-  </label>
-  <button onclick="votar()">Votar</button>
-</div>
+    <div id="resultados"></div>
+    <canvas id="graficoPastel" width="400" height="400"></canvas>
 
-<button onclick="mostrarResultados()">Mostrar Resultados</button>
-
-<div id="resultados" style="display: none;">
-  <h2>Resultados de la votación</h2>
-  <p id="numeroVotos">Número total de votos: 0</p>
-  <div id="chartContainer" style="width: 400px; height: 300px;"></div>
-  <button onclick="resetear()">Volver a votar</button>
-</div>
-
-<script>
-  let votos = {
-    fuerzaEstudiantil: 0,
-    blanco: 0
-  };
-
-  let votosTotales = 0;
-  const maxVotos = 800;
-
-  // Recupera los votos almacenados en localStorage
-  if (localStorage.getItem('votos')) {
-    votos = JSON.parse(localStorage.getItem('votos'));
-    actualizarResultados();
-  }
-
-  function votar() {
-    if (votosTotales < maxVotos) {
-      const opciones = document.getElementsByName("votingOption");
-      let opcionSeleccionada = null;
-
-      opciones.forEach(opcion => {
-        if (opcion.checked) {
-          opcionSeleccionada = opcion.value;
-        }
-      });
-
-      if (opcionSeleccionada !== null) {
-        votos[opcionSeleccionada]++;
-        votosTotales++;
-
-        // Almacena los votos en localStorage
-        localStorage.setItem('votos', JSON.stringify(votos));
-
-        mostrarResultados();
-      } else {
-        alert("Por favor, elige una opción antes de votar.");
-      }
-    } else {
-      alert("Ya has alcanzado el límite de votos (800).");
-    }
-  }
-
-  function mostrarResultados() {
-    document.getElementById("votingOptions").style.display = "none";
-    document.getElementById("resultados").style.display = "block";
-
-    // Muestra los resultados en un gráfico de pizza
-    var chart = new CanvasJS.Chart("chartContainer", {
-      animationEnabled: true,
-      title: {
-        text: "Resultados de la votación"
-      },
-      data: [{
-        type: "pie",
-        startAngle: 240,
-        yValueFormatString: "##0.00'%'",
-        indexLabel: "{label} {y}",
-        dataPoints: [
-          { y: (votos.fuerzaEstudiantil / votosTotales) * 100, label: "Fuerza Estudiantil" },
-          { y: (votos.blanco / votosTotales) * 100, label: "Blanco" }
-        ]
-      }]
-    });
-
-    chart.render();
-
-    // Muestra el número total de votos acumulados
-    document.getElementById("numeroVotos").textContent = "Número total de votos: " + votosTotales;
-  }
-
-  function resetear() {
-    document.getElementById("votingOptions").style.display = "block";
-    document.getElementById("resultados").style.display = "none";
-  }
-</script>
-
-<!-- Carga la biblioteca CanvasJS -->
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="java.js"></script>
 </body>
 </html>
